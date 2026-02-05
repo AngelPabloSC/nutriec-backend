@@ -27,3 +27,8 @@ logs/
 # Build files
 dist/
 build/
+
+# AI / Agents
+.agents/
+.agent/
+.gemini/
