@@ -24,9 +24,12 @@ app.get('/', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+// Health check endpoint
+const healthCheck = (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
+};
+app.get('/health', healthCheck);
+app.get('/api/v1/health', healthCheck);
 
 // API Routes
 const authRoutes = require('./src/routes/auth');
@@ -47,6 +50,5 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-
+console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
