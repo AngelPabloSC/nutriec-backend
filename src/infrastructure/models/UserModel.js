@@ -19,7 +19,9 @@ class UserModel {
         this.activityLevel = data.activityLevel;
         this.goal = data.goal;
         this.streak = data.streak;
+        this.streak = data.streak;
         this.dailyCalories = data.dailyCalories;
+        this.macrosGoal = data.macrosGoal || { proteins: 0, carbs: 0, fats: 0 };
     }
 
     static toDomain(userModel) {
@@ -41,7 +43,9 @@ class UserModel {
             activityLevel: userModel.activityLevel,
             goal: userModel.goal,
             streak: userModel.streak,
-            dailyCalories: userModel.dailyCalories
+            streak: userModel.streak,
+            dailyCalories: userModel.dailyCalories,
+            macrosGoal: userModel.macrosGoal
         };
     }
 
@@ -64,7 +68,9 @@ class UserModel {
             activityLevel: userDomain.activityLevel,
             goal: userDomain.goal,
             streak: userDomain.streak,
-            dailyCalories: userDomain.dailyCalories
+            streak: userDomain.streak,
+            dailyCalories: userDomain.dailyCalories,
+            macrosGoal: userDomain.macrosGoal
         });
     }
 }

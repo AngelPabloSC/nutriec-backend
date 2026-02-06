@@ -5,11 +5,14 @@ class FoodRecordModel {
         this.foodName = data.foodName;
         this.calories = data.calories;
         this.macros = {
-            proteins: data.proteins || 0,
-            carbs: data.carbs || 0,
-            fats: data.fats || 0
+            proteins: (data.macros && data.macros.proteins) || data.proteins || 0,
+            carbs: (data.macros && data.macros.carbs) || data.carbs || 0,
+            fats: (data.macros && data.macros.fats) || data.fats || 0
         };
         this.imageUrl = data.imageUrl;
+        this.category = data.category; // 'Almuerzo', etc
+        this.tags = data.tags || []; // ['Pescado']
+        this.time = data.time; // '12:00'
         this.date = data.date;
         this.createdAt = data.createdAt;
         this.type = 'foodRecord'; // Discriminator
@@ -26,7 +29,11 @@ class FoodRecordModel {
             fats: model.macros.fats,
             imageUrl: model.imageUrl,
             date: model.date,
-            createdAt: model.createdAt
+            createdAt: model.createdAt,
+            // Metadata
+            category: model.category,
+            tags: model.tags,
+            time: model.time
         };
     }
 
@@ -41,7 +48,11 @@ class FoodRecordModel {
             fats: entity.fats,
             imageUrl: entity.imageUrl,
             date: entity.date,
-            createdAt: entity.createdAt
+            createdAt: entity.createdAt,
+            // Metadata
+            category: entity.category,
+            tags: entity.tags,
+            time: entity.time
         });
     }
 }

@@ -18,7 +18,17 @@ class User {
         this.activityLevel = activityLevel || null; // 'sedentary', 'active', etc
         this.goal = goal || null; // 'lose_weight', 'muscle', 'maintenance'
         this.streak = streak || 0;
+        this.streak = streak || 0;
         this.dailyCalories = dailyCalories || 2000; // Default
+        this.macrosGoal = {
+            proteins: 0,
+            carbs: 0,
+            fats: 0
+        };
+        // If passed individually or in macros object
+        if (arguments[0].macrosGoal) {
+            this.macrosGoal = arguments[0].macrosGoal;
+        }
     }
 
     validate() {
@@ -51,7 +61,9 @@ class User {
             activityLevel: this.activityLevel,
             goal: this.goal,
             streak: this.streak,
-            dailyCalories: this.dailyCalories
+            streak: this.streak,
+            dailyCalories: this.dailyCalories,
+            macrosGoal: this.macrosGoal
         };
     }
 }

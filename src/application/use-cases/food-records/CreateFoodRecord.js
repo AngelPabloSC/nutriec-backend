@@ -1,4 +1,4 @@
-const FoodRecord = require('../../domain/entities/FoodRecord');
+const FoodRecord = require('../../../domain/entities/FoodRecord');
 
 class CreateFoodRecord {
     constructor(cosmosDbRepository) {

@@ -1,5 +1,5 @@
-const AppError = require('../utils/AppError');
-const asyncHandler = require('../utils/asyncHandler');
+const AppError = require('../../presentation/utils/AppError');
+const asyncHandler = require('../../presentation/utils/asyncHandler');
 
 class AuthController {
     constructor(registerUserUseCase, loginUserUseCase) {

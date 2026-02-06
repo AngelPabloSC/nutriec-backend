@@ -1,4 +1,4 @@
-const customVision = require('../../infrastructure/services/customVision');
+const customVision = require('../../../infrastructure/services/customVision');
 
 class AnalyzeFood {
     constructor() {

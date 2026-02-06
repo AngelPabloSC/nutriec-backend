@@ -15,13 +15,13 @@ class CosmosDbRepository {
         try {
             let itemModel;
 
-            // Determine which model to use based on item properties
+
+
             if (itemDomain.password && itemDomain.email) {
                 itemModel = UserModel.fromDomain(itemDomain);
             } else if (itemDomain.calories !== undefined) {
                 itemModel = FoodRecordModel.fromDomain(itemDomain);
             } else {
-                // Fallback for generic items or tests
                 itemModel = itemDomain;
             }
 

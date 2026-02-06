@@ -1,11 +1,12 @@
-const User = require('../../domain/entities/User');
+const User = require('../../../domain/entities/User');
 
 class UpdateUserProfile {
-    constructor(cosmosDbRepository) {
+    constructor(cosmosDbRepository, blobStorageRepository) {
         this.cosmosDbRepository = cosmosDbRepository;
+        this.blobStorageRepository = blobStorageRepository;
     }
 
-    async execute(userId, updateData) {
+    async execute(userId, updateData, imageFile) {
         // 1. Get current user via Query (Cross-partition safe)
         const querySpec = {
             query: 'SELECT * FROM c WHERE c.id = @id',
@@ -28,11 +29,25 @@ class UpdateUserProfile {
 
             // Update simple fields
             if (updateData.name) updatedFields.name = updateData.name;
-            if (updateData.age) updatedFields.age = updateData.age;
+            if (updateData.age) updatedFields.age = parseInt(updateData.age); // FormData sends strings
             if (updateData.gender) updatedFields.gender = updateData.gender;
-            if (updateData.height) updatedFields.height = updateData.height;
+            if (updateData.height) updatedFields.height = parseFloat(updateData.height);
             if (updateData.activityLevel) updatedFields.activityLevel = updateData.activityLevel;
             if (updateData.goal) updatedFields.goal = updateData.goal;
+
+            // Handle Image Upload
+            if (imageFile) {
+                const extension = imageFile.originalname.split('.').pop() || 'png';
+                const blobName = `users/${userId}/profile/avatar.${extension}`;
+
+                // Upload buffer directly
+                const uploadResult = await this.blobStorageRepository.uploadFile(
+                    blobName,
+                    imageFile.buffer,
+                    imageFile.mimetype
+                );
+                updatedFields.profileImageUrl = uploadResult.url;
+            }
 
             // 3. Handle Weight History
             if (updateData.weight) {
@@ -71,21 +86,18 @@ class UpdateUserProfile {
                 if (updatedFields.goal === 'gain_weight') calories += 500;
 
                 updatedFields.dailyCalories = Math.round(calories);
+
+                // Calculate Macros Goal (Standard: 30% Protein, 40% Carbs, 30% Fat)
+                // 1g Protein = 4 cal, 1g Carb = 4 cal, 1g Fat = 9 cal
+                updatedFields.macrosGoal = {
+                    proteins: Math.round((updatedFields.dailyCalories * 0.30) / 4),
+                    carbs: Math.round((updatedFields.dailyCalories * 0.40) / 4),
+                    fats: Math.round((updatedFields.dailyCalories * 0.30) / 9)
+                };
             }
 
-            // 5. Explicitly preserve internal Cosmos system fields to avoid "Replace" creating a new document mistakenly
-            // DELETE unneeded system fields that update might reject if trying to modify read-only props
-            // Actually, for upsert with same ID, we just need ID and partition key in the body.
-
-            // ATTEMPT TO FIND REAL PARTITION KEY
-            // If the collection is partitioned by something else, we might need it.
-            // Using logic: If property exists in data and is used as PK, we need to keep it.
-            // We already copied {...currentUserData} so we have all fields.
-
-            // 6. Save using Update (which now tries Replace -> Upsert)
-            // Passing updatedFields.partitionKey allows the service to try explicit replacement.
-            // If that fails, it will upsert based on the body content.
-
+            // 5. Save using Update
+            // Passing updatedFields.partitionKey allows replace optimization
             const updateResult = await this.cosmosDbRepository.update(userId, updatedFields);
 
             // Return safe user data

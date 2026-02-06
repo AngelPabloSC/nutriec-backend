@@ -1,5 +1,5 @@
-const asyncHandler = require('../utils/asyncHandler');
-const AppError = require('../utils/AppError');
+const asyncHandler = require('../../presentation/utils/asyncHandler');
+const AppError = require('../../presentation/utils/AppError');
 
 class UserController {
     constructor(getUserProfileUseCase, updateUserProfileUseCase) {
@@ -27,10 +27,11 @@ class UserController {
         }
 
         const updateData = req.body;
+        const imageFile = req.file;
 
         // Basic validation could go here, or in use case
 
-        const result = await this.updateUserProfileUseCase.execute(req.user.id, updateData);
+        const result = await this.updateUserProfileUseCase.execute(req.user.id, updateData, imageFile);
 
         res.status(200).json(result);
     });

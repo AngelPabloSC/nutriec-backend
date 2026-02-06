@@ -1,4 +1,4 @@
-const User = require('../../domain/entities/User');
+const User = require('../../../domain/entities/User');
 
 class RegisterUser {
     constructor(cosmosDbRepository, blobStorageRepository, encryptionService, tokenService) {

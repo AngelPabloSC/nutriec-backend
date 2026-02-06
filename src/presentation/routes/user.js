@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { userController } = require('../config/dependencies');
+const { userController } = require('../../config/dependencies');
 const { protect } = require('../middleware/authMiddleware');
 
 const requireBody = require('../middleware/requireBody');
@@ -12,10 +12,13 @@ const requireBody = require('../middleware/requireBody');
  */
 router.post('/profile', protect, requireBody, userController.getProfile);
 
+const upload = require('../middleware/uploadMiddleware');
+
 /**
  * Update User Profile
  * POST /api/user/update (Auth Required)
+ * Consumes: multipart/form-data or application/json
  */
-router.post('/update', protect, requireBody, userController.updateProfile);
+router.post('/update', protect, upload.single('image'), requireBody, userController.updateProfile);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const { imageController } = require('../config/dependencies');
+const { imageController } = require('../../config/dependencies');
 
 // Configure multer for memory storage
 const upload = multer({
@@ -18,15 +18,16 @@ const upload = multer({
     }
 });
 
-const requireBody = require('../middleware/requireBody');
+const { protect } = require('../middleware/authMiddleware');
 
 /**
  * Upload a food image
  * POST /api/images/upload
- * Body: { userId: string, file: File }
+ * Header: Authorization: Bearer <token>
+ * Body: { file: File }
  */
 // Mutler processes the body first, but we still want to ensure body exists for other fields
-router.post('/upload', upload.single('image'), requireBody, imageController.upload);
+router.post('/upload', protect, upload.single('image'), imageController.upload);
 
 /**
  * Analyze a food image with AI

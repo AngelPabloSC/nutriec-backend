@@ -78,9 +78,7 @@ class CustomVisionService {
         }
     }
 
-    /**
-     * Test connection to Custom Vision
-     */
+ 
     async testConnection() {
         try {
             const projects = await this.trainingClient.getProjects();

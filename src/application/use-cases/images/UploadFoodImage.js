@@ -1,4 +1,4 @@
-const FoodImage = require('../../domain/entities/FoodImage');
+const FoodImage = require('../../../domain/entities/FoodImage');
 
 class UploadFoodImage {
     constructor(blobStorageRepository, cosmosDbRepository) {

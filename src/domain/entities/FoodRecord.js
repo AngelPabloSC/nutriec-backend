@@ -1,5 +1,5 @@
 class FoodRecord {
-    constructor({ id, userId, foodName, calories, proteins, carbs, fats, imageUrl, date, createdAt }) {
+    constructor({ id, userId, foodName, calories, proteins, carbs, fats, imageUrl, date, createdAt, category, tags, time }) {
         this.id = id;
         this.userId = userId;
         this.foodName = foodName;
@@ -10,6 +10,11 @@ class FoodRecord {
         this.imageUrl = imageUrl || null;
         this.date = date || new Date().toISOString();
         this.createdAt = createdAt || new Date().toISOString();
+
+        // Metadata
+        this.category = category || 'Snack';
+        this.tags = tags || [];
+        this.time = time || '00:00';
     }
 
     validate() {
@@ -36,7 +41,11 @@ class FoodRecord {
             fats: this.fats,
             imageUrl: this.imageUrl,
             date: this.date,
-            createdAt: this.createdAt
+            createdAt: this.createdAt,
+            // Metadata
+            category: this.category,
+            tags: this.tags,
+            time: this.time
         };
     }
 }

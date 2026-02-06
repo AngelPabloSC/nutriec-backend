@@ -1,5 +1,5 @@
-const AppError = require('../utils/AppError');
-const asyncHandler = require('../utils/asyncHandler');
+const AppError = require('../../presentation/utils/AppError');
+const asyncHandler = require('../../presentation/utils/asyncHandler');
 
 class ImageController {
     constructor(uploadFoodImageUseCase, analyzeFoodUseCase) {
@@ -8,11 +8,11 @@ class ImageController {
     }
 
     upload = asyncHandler(async (req, res, next) => {
-        const { userId } = req.body;
+        const userId = req.user.id;
         const file = req.file;
 
         if (!userId) {
-            return next(new AppError('Missing required field: userId', 400));
+            return next(new AppError('User identifier not found', 401));
         }
 
         if (!file) {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authController } = require('../config/dependencies');
+const { authController } = require('../../config/dependencies');
 
 /**
  * Register a new user
