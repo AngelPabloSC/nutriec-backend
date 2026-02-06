@@ -10,7 +10,7 @@ const requireBody = require('../middleware/requireBody');
  * POST /api/user/profile (Auth Required)
  * Although GET is semantic, client requested all POSTs.
  */
-router.post('/profile', protect, requireBody, userController.getProfile);
+router.post('/profile', protect, userController.getProfile);
 
 const upload = require('../middleware/uploadMiddleware');
 
