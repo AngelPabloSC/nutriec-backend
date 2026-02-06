@@ -13,6 +13,14 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// DEBUG: Log incoming requests for Azure debugging
+app.use((req, res, next) => {
+    console.log(`[REQUEST] ${req.method} ${req.url}`);
+    console.log('[HEADERS]', JSON.stringify(req.headers));
+    console.log('[BODY]', JSON.stringify(req.body));
+    next();
+});
+
 // Routes
 app.get('/', (req, res) => {
     res.json({
@@ -50,5 +58,5 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
