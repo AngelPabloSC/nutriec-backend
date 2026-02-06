@@ -8,7 +8,8 @@ class AuthController {
     }
 
     register = asyncHandler(async (req, res, next) => {
-        const { name, email, password, image } = req.body;
+        const { name, email, password } = req.body;
+        const imageFile = req.file; // Multer puts file here
 
         if (!name || !email || !password) {
             return next(new AppError('Missing required fields: name, email, password', 400));
@@ -19,7 +20,8 @@ class AuthController {
                 name,
                 email,
                 password,
-                image
+                password,
+                imageFile
             });
 
             res.status(201).json(result);

@@ -7,7 +7,14 @@ const { authController } = require('../config/dependencies');
  * POST /auth/register
  */
 // Pass next implicitly by passing the function reference
-router.post('/register', authController.register);
+const upload = require('../middleware/uploadMiddleware');
+
+/**
+ * Register a new user
+ * POST /auth/register
+ * Consumes: multipart/form-data
+ */
+router.post('/register', upload.single('image'), authController.register);
 
 /**
  * Login user

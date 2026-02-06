@@ -8,7 +8,7 @@ class RegisterUser {
         this.tokenService = tokenService;
     }
 
-    async execute({ name, email, password, image }) {
+    async execute({ name, email, password, imageFile }) {
         // 1. Check if user already exists
         const existingUser = await this.cosmosDbRepository.findUserByEmail(email);
         if (existingUser) {
@@ -23,9 +23,16 @@ class RegisterUser {
         let profileImageUrl = null;
 
         // 4. Upload image if provided
-        if (image) {
-            const blobName = `users/${userId}/profile/avatar.png`;
-            const uploadResult = await this.blobStorageRepository.uploadBase64(blobName, image);
+        if (imageFile) {
+            const extension = imageFile.originalname.split('.').pop() || 'png';
+            const blobName = `users/${userId}/profile/avatar.${extension}`;
+
+            // Upload buffer directly
+            const uploadResult = await this.blobStorageRepository.uploadFile(
+                blobName,
+                imageFile.buffer,
+                imageFile.mimetype
+            );
             profileImageUrl = uploadResult.url;
         }
 

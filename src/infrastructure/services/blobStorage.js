@@ -24,8 +24,13 @@ class BlobStorageService {
      */
     async uploadFile(blobName, fileBuffer, contentType) {
         try {
+            // Remove container name from blobName if present to avoid duplication in URL
+            const sanitizedBlobName = blobName.startsWith(`${this.containerName}/`)
+                ? blobName.replace(`${this.containerName}/`, '')
+                : blobName;
+
             const containerClient = this.getContainerClient();
-            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+            const blockBlobClient = containerClient.getBlockBlobClient(sanitizedBlobName);
 
             const uploadResponse = await blockBlobClient.upload(
                 fileBuffer,
