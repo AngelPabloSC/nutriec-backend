@@ -16,11 +16,13 @@ const upload = require('../middleware/uploadMiddleware');
  */
 router.post('/register', upload.single('image'), authController.register);
 
+const requireBody = require('../middleware/requireBody');
+
 /**
  * Login user
  * POST /api/auth/login
  */
-router.post('/login', authController.login);
+router.post('/login', requireBody, authController.login);
 
 
 module.exports = router;

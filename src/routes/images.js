@@ -18,12 +18,15 @@ const upload = multer({
     }
 });
 
+const requireBody = require('../middleware/requireBody');
+
 /**
  * Upload a food image
  * POST /api/images/upload
  * Body: { userId: string, file: File }
  */
-router.post('/upload', upload.single('image'), imageController.upload);
+// Mutler processes the body first, but we still want to ensure body exists for other fields
+router.post('/upload', upload.single('image'), requireBody, imageController.upload);
 
 /**
  * Analyze a food image with AI

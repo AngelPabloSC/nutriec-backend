@@ -8,10 +8,6 @@ class AuthController {
     }
 
     register = asyncHandler(async (req, res, next) => {
-        if (!req.body) {
-            return next(new AppError('Request body is missing', 400));
-        }
-
         const { name, email, password } = req.body;
         const imageFile = req.file; // Multer puts file here
 
@@ -37,10 +33,6 @@ class AuthController {
     });
 
     login = asyncHandler(async (req, res, next) => {
-        if (!req.body) {
-            return next(new AppError('Request body is missing. Ensure Content-Type is application/json', 400));
-        }
-
         const { email, password } = req.body;
 
         if (!email || !password) {
