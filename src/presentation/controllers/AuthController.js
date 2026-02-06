@@ -26,9 +26,9 @@ class AuthController {
             res.status(201).json(result);
         } catch (error) {
             if (error.message.includes('already exists')) {
-                throw new AppError(error.message, 409);
+                return next(new AppError(error.message, 409));
             }
-            throw error;
+            return next(error);
         }
     });
 
@@ -44,9 +44,9 @@ class AuthController {
             res.status(200).json(result);
         } catch (error) {
             if (error.message === 'Invalid credentials') {
-                throw new AppError('Invalid email or password', 401);
+                return next(new AppError('Invalid email or password', 401));
             }
-            throw error;
+            return next(error);
         }
     });
 }
