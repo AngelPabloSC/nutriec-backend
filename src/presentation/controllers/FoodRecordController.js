@@ -99,6 +99,11 @@ class FoodRecordController {
             name: record.foodName,
             category: record.category,
             calories: record.calories,
+            macros: {
+                proteins: record.proteins,
+                carbs: record.carbs,
+                fats: record.fats
+            },
             imageUrl: record.imageUrl,
             tags: record.tags,
             time: record.time
