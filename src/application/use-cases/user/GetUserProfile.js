@@ -38,10 +38,12 @@ class GetUserProfile {
         // Format user-facing profile
         return {
             name: userData.name,
+            email: userData.email,
             location: "Quito, Ecuador",
             avatarUrl: userData.profileImageUrl,
             badge: "NUTRIEC MEMBER",
             currentWeight: parseFloat((userData.currentWeight || 0).toFixed(1)),
+            height: userData.height,
             dailyCalories: userData.dailyCalories || 2000,
             streak: userData.streak || 0,
             weightChange: parseFloat(weightChange.toFixed(1)),
