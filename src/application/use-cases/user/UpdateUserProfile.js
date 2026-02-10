@@ -50,8 +50,10 @@ class UpdateUserProfile {
             }
 
             // 3. Handle Weight History
-            if (updateData.weight) {
-                const newWeight = parseFloat(updateData.weight);
+            const incomingWeight = updateData.weight || updateData.currentWeight;
+
+            if (incomingWeight) {
+                const newWeight = parseFloat(incomingWeight);
                 const currentWeight = updatedFields.currentWeight || 0;
 
                 if (newWeight !== currentWeight) {
