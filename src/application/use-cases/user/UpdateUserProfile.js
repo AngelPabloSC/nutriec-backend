@@ -34,6 +34,7 @@ class UpdateUserProfile {
             if (updateData.height) updatedFields.height = parseFloat(updateData.height);
             if (updateData.activityLevel) updatedFields.activityLevel = updateData.activityLevel;
             if (updateData.goal) updatedFields.goal = updateData.goal;
+            if (updateData.streak !== undefined) updatedFields.streak = parseInt(updateData.streak);
 
             // Handle Image Upload
             if (imageFile) {
