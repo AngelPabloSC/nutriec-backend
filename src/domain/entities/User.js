@@ -19,6 +19,7 @@ class User {
         this.goal = goal || null; // 'lose_weight', 'muscle', 'maintenance'
         this.streak = streak || 0;
         this.streak = streak || 0;
+        this.lastActivityDate = arguments[0].lastActivityDate || null;
         this.dailyCalories = dailyCalories || 2000; // Default
         this.macrosGoal = {
             proteins: 0,
@@ -62,6 +63,7 @@ class User {
             goal: this.goal,
             streak: this.streak,
             streak: this.streak,
+            lastActivityDate: this.lastActivityDate,
             dailyCalories: this.dailyCalories,
             macrosGoal: this.macrosGoal
         };
